@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python-механизм</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#workshop" aria-label="Python-механизм">
+        <span class="brand-mark">Py</span>
+        <span>Python-механизм</span>
+      </a>
+      <nav class="nav" aria-label="Разделы">
+        <a href="#workshop">Мастерская</a>
+        <a href="#details">Детали</a>
+        <a href="#github">GitHub</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="workshop">
+        <div class="hero-copy">
+          <p class="eyebrow">Интерактивная мастерская Python</p>
+          <h1>Собирай код из деталей и запускай его как настоящую машину.</h1>
+          <p>
+            Перетаскивай детали в гнезда, проверяй цепь, смотри, как собирается строка Python,
+            и запускай механизм. Если деталь стоит на своем месте, шестерни оживают, кабели
+            проводят сигнал, а экран показывает результат команды.
+          </p>
+          <div class="hero-actions">
+            <button class="primary-action" id="startButton" type="button">В мастерскую</button>
+            <button class="ghost-action" id="resetButton" type="button">Сбросить</button>
+          </div>
+        </div>
+
+        <div class="machine-preview" aria-label="Демонстрация механизма Python">
+          <div class="preview-gear gear-a"></div>
+          <div class="preview-gear gear-b"></div>
+          <div class="preview-gear gear-c"></div>
+          <div class="preview-belt"></div>
+          <div class="preview-part preview-box">name</div>
+          <div class="preview-part preview-equals">=</div>
+          <div class="preview-part preview-pack">"Mira"</div>
+          <div class="preview-part preview-print">print()</div>
+          <div class="preview-light"></div>
+        </div>
+      </section>
+
+      <section class="app-shell" aria-label="Рабочий стол тренажера">
+        <aside class="levels" aria-label="Уровни">
+          <h2>Задания</h2>
+          <div class="level-list" id="levelList"></div>
+        </aside>
+
+        <section class="workbench" aria-live="polite">
+          <div class="lesson-head">
+            <div>
+              <p class="eyebrow">Поле механизма</p>
+              <h2 id="lessonTitle">Загрузка</h2>
+            </div>
+            <div class="progress">
+              <span id="progressText">0 из 10</span>
+              <div class="progress-track" aria-hidden="true">
+                <div class="progress-fill" id="progressFill"></div>
+              </div>
+            </div>
+          </div>
+
+          <p class="lesson-brief" id="lessonBrief"></p>
+
+          <div class="modifier-strip" aria-label="Модификаторы тренажера">
+            <label class="modifier-switch">
+              <input id="guideToggle" type="checkbox" checked>
+              <span>
+                <strong>Контуры деталей</strong>
+                <small>гнезда показывают, что им нужно</small>
+              </span>
+            </label>
+            <label class="modifier-switch">
+              <input id="autoRunToggle" type="checkbox" checked>
+              <span>
+                <strong>Автозапуск</strong>
+                <small>механизм сам стартует при верной сборке</small>
+              </span>
+            </label>
+            <label class="modifier-switch">
+              <input id="strictToggle" type="checkbox">
+              <span>
+                <strong>Строгая посадка</strong>
+                <small>ошибочная деталь не войдет в гнездо</small>
+              </span>
+            </label>
+          </div>
+
+          <div class="assembly-grid">
+            <div class="parts-panel">
+              <div class="panel-head">
+                <h3>Склад деталей</h3>
+                <span>есть лишние элементы</span>
+              </div>
+              <div class="parts" id="parts"></div>
+            </div>
+
+            <div class="machine-board-panel">
+              <div class="panel-head">
+                <h3>Гнезда механизма</h3>
+                <span id="slotCount">0 деталей</span>
+              </div>
+              <div class="machine-board" id="machineBoard">
+                <div class="board-depth"></div>
+                <div class="board-pipe pipe-top"></div>
+                <div class="board-pipe pipe-side"></div>
+                <div class="pressure-gauge" aria-hidden="true">
+                  <span></span>
+                </div>
+                <div class="hydraulic-arm arm-left" aria-hidden="true"></div>
+                <div class="hydraulic-arm arm-right" aria-hidden="true"></div>
+                <div class="board-rail"></div>
+                <div class="board-energy"></div>
+                <svg class="cable-layer" id="cableLayer" aria-hidden="true"></svg>
+                <div class="board-sparks" id="boardSparks"></div>
+                <div class="assembly-meter" id="assemblyMeter" aria-label="Состояние цепи"></div>
+                <div class="machine-slots" id="slots"></div>
+                <div class="status-dock">
+                  <span class="status-light" id="machineLight"></span>
+                  <span id="machineStatus">Ожидание сборки</span>
+                </div>
+              </div>
+              <div class="controls">
+                <button class="primary-action" id="runButton" type="button">Запустить</button>
+                <button class="ghost-action" id="hintButton" type="button">Подсказка</button>
+                <button class="ghost-action" id="clearButton" type="button">Очистить поле</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="result-grid">
+            <section class="code-panel">
+              <h3>Код Python</h3>
+              <pre id="codePreview"><code></code></pre>
+            </section>
+            <section class="output-panel">
+              <h3>Экран результата</h3>
+              <div class="output" id="output">Поставь детали в гнезда и нажми "Запустить".</div>
+            </section>
+          </div>
+
+          <section class="trace-panel" aria-label="Диагностика сборки">
+            <div class="panel-head">
+              <h3>Диагностика цепи</h3>
+              <span id="traceSummary">ждет деталей</span>
+            </div>
+            <div class="trace-list" id="tracePanel"></div>
+          </section>
+        </section>
+      </section>
+
+      <section class="details" id="details">
+        <div class="section-head">
+          <p class="eyebrow">Словарь деталей</p>
+          <h2>Как механизм говорит на Python</h2>
+        </div>
+        <div class="detail-grid">
+          <article>
+            <span>Коробка</span>
+            <h3>Переменная</h3>
+            <p>Имя места, где Python хранит данные: число, текст, список или результат функции.</p>
+          </article>
+          <article>
+            <span>Пакет</span>
+            <h3>Значение</h3>
+            <p>То, что кладется в переменную: <code>7</code>, <code>"Mira"</code>, <code>[1, 2, 3]</code>.</p>
+          </article>
+          <article>
+            <span>Транспортер</span>
+            <h3>=</h3>
+            <p>Переносит значение справа в коробку слева.</p>
+          </article>
+          <article>
+            <span>Проектор</span>
+            <h3>print()</h3>
+            <p>Выводит на экран то, что стоит внутри скобок.</p>
+          </article>
+          <article>
+            <span>Микрофон</span>
+            <h3>input()</h3>
+            <p>Просит пользователя ввести данные и возвращает ответ в программу.</p>
+          </article>
+          <article>
+            <span>Ворота</span>
+            <h3>if / else</h3>
+            <p>Открывают разные пути в зависимости от условия.</p>
+          </article>
+          <article>
+            <span>Мотор</span>
+            <h3>for</h3>
+            <p>Повторяет команду несколько раз.</p>
+          </article>
+          <article>
+            <span>Чертеж</span>
+            <h3>def</h3>
+            <p>Создает свою команду, которую можно запускать по имени.</p>
+          </article>
+          <article>
+            <span>Склад</span>
+            <h3>list / dict</h3>
+            <p>Хранит много значений сразу: по порядку или по ключам.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="github" id="github">
+        <div class="section-head">
+          <p class="eyebrow">Публикация</p>
+          <h2>Как выложить на GitHub Pages</h2>
+        </div>
+        <ol class="steps">
+          <li>Создай новый репозиторий на GitHub, например <code>python-mechanism</code>.</li>
+          <li>Загрузи файлы <code>index.html</code>, <code>style.css</code>, <code>script.js</code> и <code>README.md</code>.</li>
+          <li>Открой репозиторий, зайди в <code>Settings</code>, потом в <code>Pages</code>.</li>
+          <li>В <code>Build and deployment</code> выбери <code>Deploy from a branch</code>.</li>
+          <li>В <code>Branch</code> выбери <code>main</code> и папку <code>/root</code>, затем нажми <code>Save</code>.</li>
+          <li>Через минуту GitHub даст ссылку вида <code>https://имя.github.io/python-mechanism/</code>.</li>
+        </ol>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
